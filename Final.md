@@ -60,8 +60,6 @@ age_group
 We will begin with an initial overview of the data. 
 
 ### Suicide Rate by Country
-
-###
 ```r
 countries_plot <- countries %>%
   ggplot(aes(x = factor(country, ordered=TRUE, levels=rev(countries$country)), y = suicides_per_100k, fill=suicides_per_100k)) +
@@ -70,6 +68,8 @@ countries_plot <- countries %>%
   scale_y_continuous(breaks=seq(0,45,5)) +
   labs(title = "Country vs Suicides per 100k", x = "Country", y = "Suicides per 100k")
 ```
+
+### GDP vs Suicide Rate
 ```r
 gdp_plot <- gdp %>%
   ggplot(aes(x = gdp_per_capita, y = suicides_per_100k)) +
@@ -78,25 +78,27 @@ gdp_plot <- gdp %>%
   scale_x_continuous(breaks=seq(0,200000,10000)) +
   labs(title = "GDP per Capita vs Suicides per 100k", x = "GDP per Capita", y = "Suicides per 100k")
 ```
+### Global Suicide Rates over Time
 ```r
 time_plot <- time_df %>%
   ggplot(aes(x = year, y = suicides_per_100k)) +
   geom_point() +
   geom_line() +
   labs(title = "Suicides per 100k over time", x = "Time", y = "Suicides per 100k")
+```
+### Suicide Rates by Gender
+```r
 sex_plot <- sex %>%
   ggplot(aes(x = sex, y = suicides_per_100k, fill=sex)) +
   geom_bar(stat="identity") +
   labs(title = "Gender vs Suicides per 100k", x = "Gender", y = "Suicides per 100k")
+```
+### Suicide Rates by Age Group
+```r
 age_group_plot <- age_group %>%
   ggplot(aes(x = factor(age, ordered=TRUE, levels=c("5-14 years","15-24 years","25-34 years","35-54 years","55-74 years","75+ years")), y= suicides_per_100k, fill=age)) +
   geom_bar(stat="identity") +
   labs(title = "Age Group vs Suicides per 100k", x = "Age group", y = "Suicides per 100k")
-countries_plot
-gdp_plot
-time_plot
-sex_plot
-age_group_plot
 ```
 
 
