@@ -3,9 +3,9 @@ Vardhan Mehan
 Chanseok Lee
 Raymond Bao
 
-# 320 Final Project: 
-## Tutorial on Data Science Pipeline
-## Impact of GDP on Global Suicide Rates 
+# CMSC320 Final Project: 
+## *Tutorial on Data Science Pipeline*
+## *Impact of GDP on Global Suicide Rates*
 
 
 ## Introduction
@@ -57,7 +57,11 @@ age_group
 ```
 
 ## Data Analysis
+We will begin with an initial overview of the data. 
 
+### Suicide Rate by Country
+
+###
 ```r
 countries_plot <- countries %>%
   ggplot(aes(x = factor(country, ordered=TRUE, levels=rev(countries$country)), y = suicides_per_100k, fill=suicides_per_100k)) +
@@ -65,12 +69,16 @@ countries_plot <- countries %>%
   coord_flip() +
   scale_y_continuous(breaks=seq(0,45,5)) +
   labs(title = "Country vs Suicides per 100k", x = "Country", y = "Suicides per 100k")
+```
+```r
 gdp_plot <- gdp %>%
   ggplot(aes(x = gdp_per_capita, y = suicides_per_100k)) +
   geom_point() +
   geom_smooth() +
   scale_x_continuous(breaks=seq(0,200000,10000)) +
   labs(title = "GDP per Capita vs Suicides per 100k", x = "GDP per Capita", y = "Suicides per 100k")
+```
+```r
 time_plot <- time_df %>%
   ggplot(aes(x = year, y = suicides_per_100k)) +
   geom_point() +
