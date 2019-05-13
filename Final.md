@@ -1,3 +1,16 @@
+### Contributors
+Vardhan Mehan
+Chanseok Lee
+Raymond Bao
+
+# 320 Final Project: Impact of GDP on Global Suicide Rates 
+
+## Introduction
+Here we analyze how well GDP acts as a predictor for the well-being of human beings and suicide rates over time. Furthermore, we look at how different factors have trended globally such as age, sex, and
+
+## Dataset 
+This compiled dataset pulled from four other datasets linked by time and place, and was built to find signals correlated to increased suicide rates among different cohorts globally, across the socio-economic spectrum.
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/RaymondBao1642/320-Final-Project/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
