@@ -269,9 +269,60 @@ age_country <- df %>%
 age_country_plot <- age_country %>%
   ggplot(aes(x = factor(country, ordered=TRUE, levels=rev(countries$country)), y = suicides_per_100k, fill = age)) +
   geom_bar(stat="Identity") +
-  coord_flip()
+  coord_flip() +
+  labs(title="Age distribution of Suicides per 100k by Country", x="Country", y="Suicides per 100k")
 
 age_country_plot
 ```
 
 ![](tutorial_files/figure-markdown_github/age_country-1.png)
+
+Here, we can see that the distribution of suicides per 100k within each age group for each country is similar to that of the global comparison. However, we do note that there are countries such as Poland, Ireland, and Iceland, among others, that have a larger portion of suicides within the 25-54 and 54-74 age groups as opposed to the 75+ group.
+
+Regression Analysis
+-------------------
+
+Now that we have analyzed our data and the interaction of variables with one another, we can test our original question: Does GDP impact suicide rates? If so, to what extent?
+
+Here, our null hypothesis, *H*<sub>0</sub>, is that there is NO correlation between the GDP and suicide rates. Our alternate hypothesis, *H*<sub>1</sub>, is that there is a correlation between the two variables. In order to test this question, we will first construct a linear regression model of the two variables. To do this, we will implement the use of the lm function in r, which computes the regression for us!
+
+``` r
+head(gdp)
+```
+
+    ## # A tibble: 6 x 4
+    ##   gdp_per_capita suicides population suicides_per_100k
+    ##            <int>    <dbl>      <dbl>             <dbl>
+    ## 1            251       47    2822500              1.67
+    ## 2            291      556    4298100             12.9 
+    ## 3            313      510    4369202             11.7 
+    ## 4            345      560    4425784             12.7 
+    ## 5            357      106    3366600              3.15
+    ## 6            359      567    4473163             12.7
+
+``` r
+reg <- lm(suicides_per_100k~gdp_per_capita, data=gdp)
+
+summary(reg)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = suicides_per_100k ~ gdp_per_capita, data = gdp)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -12.105  -6.514  -1.746   4.398  39.637 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)    1.132e+01  2.528e-01  44.759  < 2e-16 ***
+    ## gdp_per_capita 2.710e-05  9.825e-06   2.758  0.00586 ** 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 8.851 on 2231 degrees of freedom
+    ## Multiple R-squared:  0.003399,   Adjusted R-squared:  0.002952 
+    ## F-statistic: 7.609 on 1 and 2231 DF,  p-value: 0.005856
+
+From this regression, we must first note that it is in the form of *y* = *a**x* + *b*, where *y* represents the suicides per 100k and *x* represents the GDP per capita. From our regression, we have an intercept *b* = 10.32 and *a* = 2.710 \* 10<sup>−5</sup>. This means that when our GDP increases by 1, the suicides per 100k increases by 2.710 \* 10<sup>−5</sup>. Here, our *r*<sup>2</sup> value is 0.003399, which is extremely small. This means that the linear relationship between GDP and suicides per 100k is extremely weak. This is backed up by our very small *p* value. *p* = 0.005856 &lt; 0.05, so we reject our null hypothesis of no correlation and accept our alternate hypotheis that there is a correlation.

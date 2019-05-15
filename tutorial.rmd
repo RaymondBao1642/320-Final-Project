@@ -5,6 +5,7 @@ date: "5/11/2019"
 output: 
   md_document:
     variant: markdown_github
+    
 ---
 
 # CMSC320 Final Project: 
@@ -184,12 +185,29 @@ age_country <- df %>%
 age_country_plot <- age_country %>%
   ggplot(aes(x = factor(country, ordered=TRUE, levels=rev(countries$country)), y = suicides_per_100k, fill = age)) +
   geom_bar(stat="Identity") +
-  coord_flip()
+  coord_flip() +
+  labs(title="Age distribution of Suicides per 100k by Country", x="Country", y="Suicides per 100k")
 
 age_country_plot
 ```
 
+Here, we can see that the distribution of suicides per 100k within each age group for each country is similar to that of the global comparison. However, we do note that there are countries such as Poland, Ireland, and Iceland, among others, that have a larger portion of suicides within the 25-54 and 54-74 age groups as opposed to the 75+ group.
 
+## Regression Analysis
 
+Now that we have analyzed our data and the interaction of variables with one another, we can test our original question: Does GDP impact suicide rates? If so, to what extent?
+
+Here, our null hypothesis, $H_0$, is that there is NO correlation between the GDP and suicide rates. Our alternate hypothesis, $H_1$, is that there is a correlation between the two variables. In order to test this question, we will first construct a linear regression model of the two variables. To do this, we will implement the use of the lm function in r, which computes the regression for us!
+```{r}
+head(gdp)
+```
+
+```{r regression, include=TRUE}
+reg <- lm(suicides_per_100k~gdp_per_capita, data=gdp)
+
+summary(reg)
+```
+
+From this regression, we must first note that it is in the form of $y = ax + b$, where $y$ represents the suicides per 100k and $x$ represents the GDP per capita. From our regression, we have an intercept $b=10.32$ and $a = 2.710 * 10^{-5}$. This means that when our GDP increases by 1, the suicides per 100k increases by $2.710 * 10^{-5}$. Here, our $r^2$ value is 0.003399, which is extremely small. This means that the linear relationship between GDP and suicides per 100k is extremely weak. This is backed up by our very small $p$ value. $p=0.005856 < 0.05$, so we reject our null hypothesis of no correlation and accept our alternate hypotheis that there is a correlation. 
 
 
