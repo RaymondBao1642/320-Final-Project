@@ -37,17 +37,19 @@ time_df <- df %>%
 sex <- df %>%
   group_by(sex) %>%
   summarize(population = sum(as.numeric(population)), suicides = sum(as.numeric(suicides_no)), suicides_per_100k = 100000*(suicides/population))
-df
+
+head(df)
 
 age_group <- df %>%
   group_by(age) %>%
   summarize(population = sum(as.numeric(population)), suicides = sum(as.numeric(suicides_no)), suicides_per_100k = 100000*(suicides/population))
-countries 
+
+head(countries) 
   
-gdp
-time_df
-sex
-age_group
+head(gdp)
+head(time_df)
+head(sex)
+head(age_group)
 
 ```
 
