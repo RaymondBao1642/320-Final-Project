@@ -2,7 +2,7 @@
 title: "Tutorial"
 author: "Vardhan Mehan, Raymond Bao, Chanseok Lee"
 date: "5/11/2019"
-output: html_document
+output: md_document
 ---
 
 ```{r setup, include=FALSE}
