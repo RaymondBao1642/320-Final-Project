@@ -164,6 +164,8 @@ countries_plot
 
 ![](tutorial_files/figure-markdown_github/countries-1.png)
 
+Here, we can clearly see that suicide rates clearly differ by country. At the very least, we see that many European countries have high suicide rates. Therefore, we can conclude there is an association between the suicide rate and geographic locations. However, we cannot make any further assumptions on to the causation of suicide rates from this data alone due to the fact that some data may be misrepresented. For example, countries may not be reliable in collecting data on this topic and may have insufficient tools to accurately collect the data.
+
 ### GDP vs Suicide Rate
 
 ``` r
@@ -180,6 +182,14 @@ gdp_plot
     ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 
 ![](tutorial_files/figure-markdown_github/gdp-1.png)
+
+Here, we see that there are more suicides in countries with lower GDP. It is also important to note that there seem to be more suicides per 100k people in countries with lower GDP than countries with a higher GDP per capita.
+
+Some issues that we foresee with trying to find a correlation between GDP and suicide rates are the possible inaccuracies of GDP as a measure of the economy. According to Investopedia, GDP doesn't include increases to Standards of Living, Negative Effects on Nature, and Household Production.
+
+GDP calculations inherently undervalues certain products by undermining their contributions to overall productivity and standards of living. For example, a technological breakthrough will increase the standard of living yet GDP will not account for that. GDP calculations also do not take into account negative effects of certain events, such as environmental decay or natural disasters. It also does not account for long term growth, such as sustainable production, clean air, etc. Finally, it doesn't account for people who do not have "market value", such as stay at home moms and free apps and services.
+
+These factors that GDP doesn't account for seems to have an impact on the mental wellbeing of a country's citizens and may therefore not be an accurate predictor of suicide rates. In order to get a better understanding of the impact of GDP on the suicide rate, we need to perform further regression analysis.
 
 ### Global Suicide Rates over Time
 
