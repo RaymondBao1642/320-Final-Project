@@ -89,7 +89,7 @@ countries_plot
 
 ### GDP vs Suicide Rate
 
-```{r gdp, fig.width = 10, fig.height=15, include = TRUE}
+```{r gdp, include = TRUE}
 gdp_plot <- gdp %>%
   ggplot(aes(x = gdp_per_capita, y = suicides_per_100k)) +
   geom_point() +
@@ -102,7 +102,7 @@ gdp_plot
 
 ### Global Suicide Rates over Time
 
-```{r time, fig.width = 10, fig.height=15, include = TRUE}
+```{r time, include = TRUE}
 time_plot <- time_df %>%
   ggplot(aes(x = year, y = suicides_per_100k)) +
   geom_point() +
@@ -114,7 +114,7 @@ time_plot
 
 ### Suicide Rates by Gender
 
-```{r sex, fig.width = 10, fig.height=15, include = TRUE}
+```{r sex, include = TRUE}
 
 sex_plot <- sex %>%
   ggplot(aes(x = sex, y = suicides_per_100k, fill=sex)) +
@@ -126,7 +126,7 @@ sex_plot
 
 ### Suicide Rates by Age Group
 
-```{r age, fig.width = 10, fig.height=15, include = TRUE}
+```{r age, include = TRUE}
 age_group_plot <- age_group %>%
   ggplot(aes(x = factor(age, ordered=TRUE, levels=c("5-14 years","15-24 years","25-34 years","35-54 years","55-74 years","75+ years")), y= suicides_per_100k, fill=age)) +
   geom_bar(stat="identity") +
