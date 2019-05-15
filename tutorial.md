@@ -224,6 +224,27 @@ sex_plot
 
 It is clear to see that males comprise an extremely large portion of global suicide rates. This may be caused by the traditional male role in society and the economy. This clear difference in suicide rates between male and females should be taken into account when we create our regression model for predicting suicide rates.
 
+### Suicide rates by Gender in each Country
+
+``` r
+sex_country <- df %>%
+  group_by(country, sex) %>%
+  summarize(population = sum(as.numeric(population)), suicides = sum(as.numeric(suicides_no)), suicides_per_100k = 100000 * (suicides/population)) %>%
+  arrange(desc(suicides))
+
+gender_country_plot <- sex_country %>%
+  ggplot(aes(x = factor(country, ordered=TRUE, levels=rev(countries$country)), y = suicides_per_100k, fill = sex)) +
+  geom_bar(stat = "Identity") +
+  coord_flip() +
+  labs(title="Suicide per 100k for each Gender in each Country", x="Country", y="Suicides per 100k")
+ 
+gender_country_plot 
+```
+
+![](tutorial_files/figure-markdown_github/sex_country-1.png)
+
+We see that in each country, there is a large difference between the number of men committing suicide vs the number of women committing suicide. We saw this difference in the global suicides of men vs women. This shows that most countries, although different in economic prosperity, GDP, and location, have a similar ratio of suicide rates between men and women, further backing the need to include gender differences into our regression model.
+
 ### Suicide Rates by Age Group
 
 ``` r
@@ -240,49 +261,17 @@ age_group_plot
 There is a clear trend with age and suicide rates. Similar to sex, this may be due to environmental and societal pressures that may grow over time. For example, the average suicide rates for people in the work force (roughly between the ages of 25 and 75) are relatively high and increase with age. For the 75+ category, it is important to note that the definition of suicide may differ from country to country, so it possible that deaths due to euthanasia and assisted suicide (from doctors) may be added to this count.
 
 ``` r
-sex_country <- df %>%
-  group_by(country, sex) %>%
-  summarize(population = sum(as.numeric(population)), suicides = sum(as.numeric(suicides_no)), suicides_per_100k = 100000 * (suicides/population)) %>%
-  arrange(desc(suicides))
-
-sex_country
-```
-
-    ## # A tibble: 202 x 5
-    ## # Groups:   country [101]
-    ##    country            sex    population suicides suicides_per_100k
-    ##    <fct>              <fct>       <dbl>    <dbl>             <dbl>
-    ##  1 Russian Federation male   1710091647   995412             58.2 
-    ##  2 United States      male   3940328915   820216             20.8 
-    ##  3 Japan              male   1796237345   555272             30.9 
-    ##  4 Ukraine            male    591598875   258573             43.7 
-    ##  5 Japan              female 1884787499   251630             13.4 
-    ##  6 France             male    808977854   239708             29.6 
-    ##  7 Russian Federation female 1980710973   214330             10.8 
-    ##  8 United States      female 4113698286   213797              5.20
-    ##  9 Germany            male    986239175   211555             21.5 
-    ## 10 Republic of Korea  male    677995723   179115             26.4 
-    ## # … with 192 more rows
-
-``` r
-sex_country %>%
-  ggplot(aes(x = factor(country, ordered=TRUE, levels=rev(countries$country)), y = suicides_per_100k, fill = sex)) +
-  geom_bar(stat = "Identity") +
-  coord_flip()
-```
-
-![](tutorial_files/figure-markdown_github/gender_and_country-1.png)
-
-``` r
 age_country <- df %>%
   group_by(country, age) %>%
   summarize(population = sum(as.numeric(population)), suicides = sum(as.numeric(suicides_no)), suicides_per_100k = 100000 * (suicides/population)) %>%
   arrange(desc(suicides))
 
-age_country %>%
+age_country_plot <- age_country %>%
   ggplot(aes(x = factor(country, ordered=TRUE, levels=rev(countries$country)), y = suicides_per_100k, fill = age)) +
   geom_bar(stat="Identity") +
   coord_flip()
+
+age_country_plot
 ```
 
-![](tutorial_files/figure-markdown_github/gender_and_country-2.png)
+![](tutorial_files/figure-markdown_github/age_country-1.png)
