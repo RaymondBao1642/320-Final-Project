@@ -205,6 +205,10 @@ time_plot
 
 ![](tutorial_files/figure-markdown_github/time-1.png)
 
+When analyzing the suicide rates over time, we can see that the suicides rate fluctuate, peaking in 1995. It is possible that certain world events, such as war or poor economy, could have impacted the suicide rates during specific time periods. Note that it is also possible that countries, over time, developed better tools to determine suicide rates, so suicide rates in earlier periods of time may be misrepresented or innacurate.
+
+From this data alone, we cannot clearly determine if time impacts the suicide rate.
+
 ### Suicide Rates by Gender
 
 ``` r
@@ -218,6 +222,8 @@ sex_plot
 
 ![](tutorial_files/figure-markdown_github/sex-1.png)
 
+It is clear to see that males comprise an extremely large portion of global suicide rates. This may be caused by the traditional male role in society and the economy. This clear difference in suicide rates between male and females should be taken into account when we create our regression model for predicting suicide rates.
+
 ### Suicide Rates by Age Group
 
 ``` r
@@ -230,6 +236,8 @@ age_group_plot
 ```
 
 ![](tutorial_files/figure-markdown_github/age-1.png)
+
+There is a clear trend with age and suicide rates. Similar to sex, this may be due to environmental and societal pressures that may grow over time. For example, the average suicide rates for people in the work force (roughly between the ages of 25 and 75) are relatively high and increase with age. For the 75+ category, it is important to note that the definition of suicide may differ from country to country, so it possible that deaths due to euthanasia and assisted suicide (from doctors) may be added to this count.
 
 ``` r
 sex_country <- df %>%
