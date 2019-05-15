@@ -2,7 +2,9 @@
 title: "Tutorial"
 author: "Vardhan Mehan, Raymond Bao, Chanseok Lee"
 date: "5/11/2019"
-output: md_document
+output: 
+  md_document:
+    variant: markdown_github
 ---
 
 ```{r setup, include=FALSE}
