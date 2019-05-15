@@ -1,3 +1,29 @@
+CMSC320 Final Project:
+======================
+
+*Tutorial on Data Science Pipeline*
+-----------------------------------
+
+*Impact of GDP on Global Suicide Rates*
+---------------------------------------
+
+Introduction
+------------
+
+Here we analyze if economic indicators can give insight into the well-being of human beings. Specifically, we look at how GDP is correlated with suicide rates on a global level, as well as other factors at play such as age and sex.
+
+Dataset
+-------
+
+The dataset we used linked [here](https://www.kaggle.com/russellyates88/suicide-rates-overview-1985-to-2016) pulls from four other datasets linked by time and place, and was built to highlight factors correlated to increased suicide rates among different cohorts globally, across the socio-economic spectrum.
+
+Setup
+-----
+
+We will be working in RStudio.
+
+Importing libraries:
+
 Here, we read the csv file we want to use and make a dataframe for it.
 
 ``` r
@@ -118,6 +144,13 @@ head(age_group)
     ## 5 55-74 years  8803245340  1658443            18.8  
     ## 6 75+ years    2663281253   653118            24.5
 
+Data Analysis
+-------------
+
+We will begin with an initial overview of the data.
+
+### Suicide Rate by Country
+
 ``` r
 countries_plot <- countries %>%
   ggplot(aes(x = factor(country, ordered=TRUE, levels=rev(countries$country)), y = suicides_per_100k, fill=suicides_per_100k)) +
@@ -126,59 +159,67 @@ countries_plot <- countries %>%
   scale_y_continuous(breaks=seq(0,45,5)) +
   labs(title = "Country vs Suicides per 100k", x = "Country", y = "Suicides per 100k")
 
+countries_plot
+```
+
+![](tutorial_files/figure-markdown_github/countries-1.png)
+
+### GDP vs Suicide Rate
+
+``` r
 gdp_plot <- gdp %>%
   ggplot(aes(x = gdp_per_capita, y = suicides_per_100k)) +
   geom_point() +
   geom_smooth() +
   scale_x_continuous(breaks=seq(0,200000,10000)) +
   labs(title = "GDP per Capita vs Suicides per 100k", x = "GDP per Capita", y = "Suicides per 100k")
+
+gdp_plot
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+![](tutorial_files/figure-markdown_github/gdp-1.png)
+
+### Global Suicide Rates over Time
+
+``` r
 time_plot <- time_df %>%
   ggplot(aes(x = year, y = suicides_per_100k)) +
   geom_point() +
   geom_line() +
   labs(title = "Suicides per 100k over time", x = "Time", y = "Suicides per 100k")
 
+time_plot
+```
+
+![](tutorial_files/figure-markdown_github/time-1.png)
+
+### Suicide Rates by Gender
+
+``` r
 sex_plot <- sex %>%
   ggplot(aes(x = sex, y = suicides_per_100k, fill=sex)) +
   geom_bar(stat="identity") +
   labs(title = "Gender vs Suicides per 100k", x = "Gender", y = "Suicides per 100k")
 
+sex_plot
+```
+
+![](tutorial_files/figure-markdown_github/sex-1.png)
+
+### Suicide Rates by Age Group
+
+``` r
 age_group_plot <- age_group %>%
   ggplot(aes(x = factor(age, ordered=TRUE, levels=c("5-14 years","15-24 years","25-34 years","35-54 years","55-74 years","75+ years")), y= suicides_per_100k, fill=age)) +
   geom_bar(stat="identity") +
   labs(title = "Age Group vs Suicides per 100k", x = "Age group", y = "Suicides per 100k")
 
-
-countries_plot
-```
-
-![](tutorial_files/figure-markdown_github/hehe-1.png)
-
-``` r
-gdp_plot
-```
-
-    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
-
-![](tutorial_files/figure-markdown_github/hehe-2.png)
-
-``` r
-time_plot
-```
-
-![](tutorial_files/figure-markdown_github/hehe-3.png)
-
-``` r
-sex_plot
-```
-
-![](tutorial_files/figure-markdown_github/hehe-4.png)
-
-``` r
 age_group_plot
 ```
 
-![](tutorial_files/figure-markdown_github/hehe-5.png)
+![](tutorial_files/figure-markdown_github/age-1.png)
 
 ``` r
 sex_country <- df %>%
