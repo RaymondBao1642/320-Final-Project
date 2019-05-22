@@ -1,6 +1,8 @@
 CMSC320 Final Project:
 ======================
 
+By Vardhan Mehan, Raymond Bao, and Chanseok Lee
+
 *Tutorial on Data Science Pipeline*
 -----------------------------------
 
