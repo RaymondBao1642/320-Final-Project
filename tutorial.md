@@ -326,3 +326,80 @@ summary(reg)
     ## F-statistic: 7.609 on 1 and 2231 DF,  p-value: 0.005856
 
 From this regression, we must first note that it is in the form of *y* = *a**x* + *b*, where *y* represents the suicides per 100k and *x* represents the GDP per capita. From our regression, we have an intercept *b* = 10.32 and *a* = 2.710 \* 10<sup>−5</sup>. This means that when our GDP increases by 1, the suicides per 100k increases by 2.710 \* 10<sup>−5</sup>. Here, our *r*<sup>2</sup> value is 0.003399, which is extremely small. This means that the linear relationship between GDP and suicides per 100k is extremely weak. This is backed up by our very small *p* value. *p* = 0.005856 &lt; 0.05, so we reject our null hypothesis of no correlation and accept our alternate hypotheis that there is a correlation.
+
+Increasing and Decreasing Suicide Rates By Country
+--------------------------------------------------
+
+``` r
+year_country <- df %>%
+  group_by(country,year) %>%
+  summarize(population = sum(as.numeric(population)), suicides = sum(as.numeric(suicides_no)), suicides_per_100k = 100000 * (suicides/population))%>%
+  filter(country != "Mongolia" & country != "Bosnia and Herzegovina" & country != "Montenegro" & country != "San Marino")%>%
+  arrange(year)
+
+trends <- year_country %>%
+  mutate(first = !duplicated(country), last = rev(!duplicated(rev(country)))) %>%
+  filter(first == TRUE | last == TRUE) %>%
+  mutate(suicides_per_100k = ifelse(first == TRUE, suicides_per_100k*-1, suicides_per_100k)) %>%
+  mutate(year = ifelse(first == TRUE, year*-1, year)) %>%
+  group_by(country) %>%
+  summarize(add_sp100k = sum(suicides_per_100k), yearDiff = sum(year)) %>%
+  mutate(slope = 1.0*add_sp100k/(yearDiff)) %>%
+  arrange(desc(slope))
+
+head(trends)
+```
+
+    ## # A tibble: 6 x 4
+    ##   country             add_sp100k yearDiff slope
+    ##   <fct>                    <dbl>    <dbl> <dbl>
+    ## 1 Guyana                   22.2        25 0.886
+    ## 2 Republic of Korea        17.7        30 0.590
+    ## 3 Trinidad and Tobago       8.36       26 0.321
+    ## 4 Uruguay                   9.26       30 0.309
+    ## 5 Cyprus                    4.94       17 0.291
+    ## 6 Malta                     7.63       30 0.254
+
+In here, we decided to see what countries had the most increasing suicide rate. To do that, we filtered only the first and last ocurrence of the country, due to us sorting by year earlier. Then we got the difference of those two suicides per 100k to create add\_sp100k. I did this by making all the data with first = TRUE to have a negative number, so when I added it together the total would be the difference. Then we created a slope based on that number, which is add\_sp100k/(the difference between the two years). This basically creates a slope for suicide rates in which we can order. After we got the order of the suicide rates, we graphed using a facet\_wrap to outline each of the countries slope and increasing trend of suicide rates. We remove Mongolia, Bosnia and Herzegovina, San Marino, and Montenegro as they do not have enough data points to make a fulfilling graph, making them outliers.
+
+``` r
+highest8 <- head(trends,8)
+totalHighest <- highest8 %>%
+  left_join(year_country, by = "country") %>%
+  ggplot(aes(x = year, y = suicides_per_100k, color = country)) +
+  geom_point() + 
+  geom_smooth(method = "lm") +
+  facet_wrap(~country + format(round(slope, 2), nsmall = 2)) + 
+  labs(title = "Highest 8 Slopes in Increasing Suicide Rates", x = "Year", y = "Suicides Per 100k")
+totalHighest
+```
+
+![](tutorial_files/figure-markdown_github/increasing-1.png) This is the graph of the top 8 countries with the highest slope. Most of them seem to gather around the .2 to .3 range, but Guyana has a.89 slope while the Republic of Korea has a .59 slope which are both huge for this data. Both could either be explained by culture and how it affects the lives of their daily citizens. Guyana compared to Korea is a bit weird, though. If you look at Korea you can see the points are all scattered around the line, and you can see it's definite trend as it goes up linearly. But for Guyana, the data points are more spread apart, nothing like Korea has. It's possible Guyana could have other types of influences like error in data collection that impact their suicide rates.
+
+``` r
+lowest8 <- tail(trends,8)
+totalLowest <- lowest8 %>%
+  left_join(year_country, by = "country") %>%
+  ggplot(aes(x = year, y = suicides_per_100k, color = country)) +
+  geom_point() + 
+  geom_smooth(method = "lm") +
+  facet_wrap(~country + format(round(slope, 2), nsmall = 2)) +
+  labs(title = "Lowest 8 Slopes in Decreasing Suicide Rates", x = "Year", y = "Suicides Per 100k")
+totalLowest
+```
+
+![](tutorial_files/figure-markdown_github/decreasing-1.png) This is the graph of the lowest 8 countries with the lowest slopes. We can note Estonia and Kiribati who have an incredibly low slope of -1.41 and -1.62 respectively. It is important to note that some of these data are incomplete for the entire time period. We see that Kiribati's slope could be affected by its lower than average year count. But unlike Guyana in the last example, most of the data points we see are closely clustered around the regression line made for it's country. There are no huge jumps. Some of these slopes could be affected by a drastic change in quality of life for its citizens, which would explain some graphs that start out very high and end up low.
+
+Summary of Topics Learned
+-------------------------
+
+Throughout this project, we have looked at numerous concepts in data science that are essential to basic data analysis. We first covered the setup for using CSV files, making dataframes, and pipelines. From there, we learned how to filter data by specific categories. After we created our custom dataframes, we the plotted our data to find trends and relationships between the data. We utilized a basic plots, such as the boxplot, scatter plot, and facet grids, to help visualize our data.
+
+We saw that data visualization is extremely important to understanding trends in the data. From the visualization stage, we began to see possible trends for us to test via hypothesis testing. We finally covered the linear regression model in machine learning. We made a null hypothesis of no relationship between our variables and an alternate hypothesis of there being a significant relationship between suicide rates and GDP per capita. We then learned how to read the summary of a linear regression model to verify its statistical correctness.
+
+In the final section of this project, we learned how to cleverly maniuplate data to determine the trend of suicide data for each country by plotting the data for each country on it's own graph with it's own slope.
+
+Insight to our Data and Analysis
+================================
+
+We have seen the power of data analysis and the linear regression model. For our data, we tried to find a trend between GDP per capita and suicide rates per 100k. We had enough statistical significance to back our claim that there is a correlation between the GDP of a country and their suicide rate. We also found that males have a much higher chance of committing suicide than women, regardless of country of origin. We further saw that the age group of a person has an impact on the suicide rate as well. These variables that have a high impact on the suicide rate are extremely important as they allow us to use them to make more accurate predictions. For example, we can make a linear regression model based on multiple factors, such as age, country of origin, gdp, and sex, among other categories, to then *p**r**e**d**i**c**t* the number of suicides of entities with such properties.
