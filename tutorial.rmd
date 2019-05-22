@@ -25,7 +25,7 @@ We will be working in RStudio.
 
 Importing libraries: 
 
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
